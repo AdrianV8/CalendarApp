@@ -6,23 +6,14 @@ import { addHours } from 'date-fns';
 
 import { Navbar, CalendarEventBox, CalendarModal } from "../";
 import { localizer, getMessagesES } from '../../helpers';
-
-
-
-const events = [{
-  title: 'Evento',
-  notes: 'comprar comida',
-  start: new Date(),
-  end: addHours( new Date(), 2 ),
-  user: {
-    id: '123',
-    name: 'Adrian'
-  }
-}]
+import { useUiStore, useCalendarStore } from '../../hooks';
 
 export const CalendarPage = () => {
+  
+  // ! ---- HOOKS ----
+  const { events } = useCalendarStore();
+  const { openDateModal } = useUiStore();
   const [lastView, setLastView] = useState(localStorage.getItem('lastView') || 'month')
-
 
   // Hacer Hook de eventStyleGetter
   const eventStyleGetter = ( event, start, end, isSelected ) => {
@@ -37,8 +28,10 @@ export const CalendarPage = () => {
     }
   }
 
+  // ! ---- FUNCIONES ADICIONALES ----
+
   const onDoubleClick = (event) => {
-    console.log({doubleClick: event});
+    openDateModal();
   } 
   const onSelect = (event) => {
     console.log({click: event});
