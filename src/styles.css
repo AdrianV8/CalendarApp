@@ -45,3 +45,15 @@
     outline: none;
     padding: 10px;
 }
+
+/* ? FABS */
+.fab{
+    width: 70px;
+    height: auto;
+    padding: 10px;
+    border-radius: 100%;
+    bottom: 25px;
+    font-size: 30px;
+    position: fixed;
+    right: 25px;
+}

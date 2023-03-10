@@ -34,7 +34,7 @@ export const CalendarModal = () => {
   
   const { isDateModalOpen, closeDateModal} = useUiStore();
 
-  const { activeEvent } = useCalendarStore();
+  const { activeEvent, startSavingEvent } = useCalendarStore();
 
   const [formValues, setFormValues] = useState({
     title: "a",
@@ -52,7 +52,7 @@ export const CalendarModal = () => {
     
   }, [activeEvent])
   
-
+  // ? Colores validación campos del formulario
   const titleClass = useMemo(() => {
     if(!formSubmitted) return '';
     return ( formValues.title.length > 0 ) ? 'is-valid' : 'is-invalid';
@@ -92,7 +92,7 @@ export const CalendarModal = () => {
     })
   }
 
-  const onSubmit = (event) => {
+  const onSubmit = async(event) => {
     event.preventDefault();
     setFormSubmitted(true);
 
@@ -104,13 +104,17 @@ export const CalendarModal = () => {
         return;
     }
     
-    if( formValues.title.length <= 0 ){
-        return
-    } 
+    if( formValues.title.length <= 0 ) return;
+
+    // TODO:
+    await startSavingEvent( formValues );
+    closeDateModal();
+    setFormSubmitted(false)
+
   }
 
 
-
+  // ! ---- MODAL ----
   return (
     <Modal
       isOpen={isDateModalOpen}
@@ -121,7 +125,7 @@ export const CalendarModal = () => {
       overlayClassName={"modal-fondo"}
       closeTimeoutMS={200}
     >
-      <h1> Nuevo evento </h1>
+      <h1>{ (formValues.title.length < 1) ? 'Nueva nota' : formValues.title }</h1>
       <hr />
       <form className="container" onSubmit={onSubmit}>
         <div className="form-group mb-2">
