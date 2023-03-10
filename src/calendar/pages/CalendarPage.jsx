@@ -8,10 +8,11 @@ import { Navbar, CalendarEventBox, CalendarModal } from "../";
 import { localizer, getMessagesES } from '../../helpers';
 import { useUiStore, useCalendarStore } from '../../hooks';
 
+
 export const CalendarPage = () => {
   
   // ! ---- HOOKS ----
-  const { events } = useCalendarStore();
+  const { events, setActiveEvent } = useCalendarStore();
   const { openDateModal } = useUiStore();
   const [lastView, setLastView] = useState(localStorage.getItem('lastView') || 'month')
 
@@ -34,7 +35,7 @@ export const CalendarPage = () => {
     openDateModal();
   } 
   const onSelect = (event) => {
-    console.log({click: event});
+    setActiveEvent(event);
   } 
   // Muestra si se ha cambiado de vista a dia, semana, mes o agenda
   const onViewChanged = (event) => {
