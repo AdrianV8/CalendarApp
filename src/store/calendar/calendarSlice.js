@@ -32,8 +32,22 @@ export const calendarSlice = createSlice({
             state.activeEvent = null;
             
         },
+        // Actualizar evento del calendario
+        onUpdateEvent: (state, {payload}) => {
+            state.events = state.events.map( event => {
+                /**
+                 * Si el 'id' del evento es el mismo que el que se manda
+                 * a través del payload, regresaremos el payload (que seria el nuevo evento actualizado)
+                 */
+                if(event._id === payload._id){
+                    return payload;
+                }
+
+                return event;
+            });
+        }
 
     }
 })
 // Action creators are generated for each case reducer function
-export const { onSetActiveEvent, onAddNewEvent } = calendarSlice.actions;
+export const { onSetActiveEvent, onAddNewEvent, onUpdateEvent } = calendarSlice.actions;
