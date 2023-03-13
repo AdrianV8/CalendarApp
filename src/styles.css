@@ -57,3 +57,14 @@
     position: fixed;
     right: 25px;
 }
+
+.fab-danger{
+    width: 70px;
+    height: auto;
+    padding: 10px;
+    border-radius: 100%;
+    bottom: 25px;
+    font-size: 30px;
+    position: fixed;
+    left: 25px;
+}

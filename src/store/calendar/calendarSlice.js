@@ -45,9 +45,19 @@ export const calendarSlice = createSlice({
 
                 return event;
             });
-        }
+        },
+        // Borrar evento
+        onDeleteEvent: (state) => {
+
+            if(state.activeEvent){
+                // Regresar todos los eventos cuyo '_id' sea diferente a la nota activa
+                state.events = state.events.filter( event => event._id !== state.activeEvent._id );
+                state.activeEvent = null;
+            }
+
+        },
 
     }
 })
 // Action creators are generated for each case reducer function
-export const { onSetActiveEvent, onAddNewEvent, onUpdateEvent } = calendarSlice.actions;
+export const { onSetActiveEvent, onAddNewEvent, onUpdateEvent, onDeleteEvent } = calendarSlice.actions;

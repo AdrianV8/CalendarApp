@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Calendar } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
-import { Navbar, CalendarEventBox, CalendarModal, FabAddNew } from "../";
+import { Navbar, CalendarEventBox, CalendarModal, FabAddNew, FabDeleteEvent } from "../";
 import { localizer, getMessagesES } from '../../helpers';
 import { useUiStore, useCalendarStore } from '../../hooks';
 
@@ -10,9 +10,11 @@ import { useUiStore, useCalendarStore } from '../../hooks';
 export const CalendarPage = () => {
   
   // ! ---- HOOKS ----
-  const { events, setActiveEvent } = useCalendarStore();
+  const { events, setActiveEvent, activeEvent } = useCalendarStore();
   const { openDateModal } = useUiStore();
   const [lastView, setLastView] = useState(localStorage.getItem('lastView') || 'month')
+
+  
 
   // Hacer Hook de eventStyleGetter
   const eventStyleGetter = ( event, start, end, isSelected ) => {
@@ -34,6 +36,7 @@ export const CalendarPage = () => {
   } 
   const onSelect = (event) => {
     setActiveEvent(event);
+    console.log({events, activeEvent});
   } 
   // Muestra si se ha cambiado de vista a dia, semana, mes o agenda
   const onViewChanged = (event) => {
@@ -64,7 +67,10 @@ export const CalendarPage = () => {
       />
 
       <CalendarModal/>
+
       <FabAddNew/>
+
+      <FabDeleteEvent/>
 
     </>
   )
