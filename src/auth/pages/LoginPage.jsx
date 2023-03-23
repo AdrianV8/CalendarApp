@@ -1,4 +1,7 @@
-import { useForm } from '../../hooks/useForm';
+import { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
+
+import { useAuthStore, useForm } from '../../hooks';
 import './LoginPage.css';
 
 //? Campos de ambos formularios
@@ -13,21 +16,35 @@ const registerFormFields = {
     registerPassword2: '',
 };
 
-
 export const LoginPage = () => {
 
     //? HOOKS / CUSTOM HOOKS
+    const { startLogin, startRegister, errorMessage } = useAuthStore();
     const { loginEmail, loginPassword, onInputChange:onLoginInputChange } = useForm( loginFormFields );
-    const { registerName, registerEmail, registerPassword, registerPassword2, onInputChange:onRegisterInputChange } = useForm( registerFormFields );
-
+    const { registerName, registerEmail, registerPassword, registerPassword2, onInputChange:onRegisterInputChange} = useForm( registerFormFields );
+    
+    useEffect(() => {
+        if(errorMessage !== null){
+            Swal.fire('Vaya, ha ocurrido un error.', errorMessage, 'error')
+        }
+    }, [errorMessage])
 
     //? ENVIO DE FORMULARIOS
     const loginSubmit = ( event ) => {
         event.preventDefault();
+        startLogin({ email: loginEmail, password: loginPassword })
     }
+
     const registerSubmit = ( event ) => {
         event.preventDefault();
         
+        if(registerPassword !== registerPassword2 ){
+            Swal.fire('¡Vaya!', 'Las contraseñas no coinciden', 'error');
+            return;
+        }
+
+        startRegister({name: registerName, email: registerEmail, password: registerPassword, password2: registerPassword2})
+
     }
 
     return (
