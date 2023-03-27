@@ -1,37 +1,41 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { addHours } from 'date-fns'
 
-const tempEvent =   {
-    _id: new Date().getTime(),
-    title: 'Evento',
-    notes: 'comprar comida',
-    start: new Date(),
-    end: addHours( new Date(), 2 ),
-    user: {
-        _id: '123',
-        name: 'Adrian'
-      }
-    }
+// const tempEvent =   {
+//     _id: new Date().getTime(),
+//     title: 'Evento',
+//     notes: 'comprar comida',
+//     start: new Date(),
+//     end: addHours( new Date(), 2 ),
+//     user: {
+//         _id: '123',
+//         name: 'Adrian'
+//       }
+// }
 
 export const calendarSlice = createSlice({
     name: 'calendarSlice',
     initialState: {
+        isLoadingEvents: true,
         events: [
-            tempEvent
+            // tempEvent
         ],
         activeEvent: null,
     },
     reducers: {
+
         // Activar nota
         onSetActiveEvent: (state, { payload }) => {
             state.activeEvent = payload;
         },
+
         // Añadir nueva nota
         onAddNewEvent: (state, { payload }) => {
             state.events.push( payload );
             state.activeEvent = null;
             
         },
+
         // Actualizar evento del calendario
         onUpdateEvent: (state, {payload}) => {
             state.events = state.events.map( event => {
@@ -46,6 +50,7 @@ export const calendarSlice = createSlice({
                 return event;
             });
         },
+
         // Borrar evento
         onDeleteEvent: (state) => {
 
@@ -57,7 +62,13 @@ export const calendarSlice = createSlice({
 
         },
 
+        // Carga de eventos
+        onLoadEvents: ( state, {payload = []} ) => {
+            state.isLoadingEvents = false;
+            state.events = payload
+        } 
+
     }
 })
 // Action creators are generated for each case reducer function
-export const { onSetActiveEvent, onAddNewEvent, onUpdateEvent, onDeleteEvent } = calendarSlice.actions;
+export const { onSetActiveEvent, onAddNewEvent, onUpdateEvent, onDeleteEvent,onLoadEvents } = calendarSlice.actions;

@@ -68,3 +68,12 @@
     position: fixed;
     left: 25px;
 }
+
+/*? Loading Page */
+
+.box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}

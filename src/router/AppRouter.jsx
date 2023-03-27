@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 
 import { LoginPage } from "../auth";
 import { CalendarPage } from "../calendar";
+import { LoadPage } from "../calendar/components/LoadPage";
 import { useAuthStore } from "../hooks";
 
 export const AppRouter = () => {
@@ -16,7 +17,7 @@ export const AppRouter = () => {
   }, [])
       
   if(status === 'checking'){
-    return ( <h3>Cargando...</h3> );
+    return ( <LoadPage/>);
   }
 
 
