@@ -23,18 +23,13 @@ export const LoginPage = () => {
     const { loginEmail, loginPassword, onInputChange:onLoginInputChange } = useForm( loginFormFields );
     const { registerName, registerEmail, registerPassword, registerPassword2, onInputChange:onRegisterInputChange} = useForm( registerFormFields );
     
-    useEffect(() => {
-        if(errorMessage !== null){
-            Swal.fire('Vaya, ha ocurrido un error.', errorMessage, 'error')
-        }
-    }, [errorMessage])
-
+    
     //? ENVIO DE FORMULARIOS
     const loginSubmit = ( event ) => {
         event.preventDefault();
         startLogin({ email: loginEmail, password: loginPassword })
     }
-
+    
     const registerSubmit = ( event ) => {
         event.preventDefault();
         
@@ -42,10 +37,16 @@ export const LoginPage = () => {
             Swal.fire('¡Vaya!', 'Las contraseñas no coinciden', 'error');
             return;
         }
-
+        
         startRegister({name: registerName, email: registerEmail, password: registerPassword, password2: registerPassword2})
-
+        
     }
+    
+    useEffect(() => {
+        if(errorMessage !== undefined){
+            Swal.fire('Vaya, ha ocurrido un error.', errorMessage, 'error')
+        }
+    }, [errorMessage])
 
     return (
         <>
