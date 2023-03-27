@@ -16,7 +16,6 @@ export const AppRouter = () => {
   }, [])
       
   if(status === 'checking'){
-    console.log('abc123');
     return ( <h3>Cargando...</h3> );
   }
 
