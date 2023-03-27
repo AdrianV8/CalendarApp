@@ -52,7 +52,7 @@ export const LoginPage = () => {
         <div className="container login-container body-background-login animate__animated animate__backInDown animate__fast ">
             <div className="row justify-content-between">
                 <div className="col-md-5 login-form-1">
-                    <h3>Login</h3>
+                    <h3>Inicia sesión</h3>
                     <form onSubmit={ loginSubmit }>
                         <div className="form-group mb-2">
                             <input 

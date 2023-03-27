@@ -16,6 +16,7 @@ export const useAuthStore = () => {
         try {
             
             const { data } = await calendarApi.post('/auth', { email, password })
+            console.log({data});
             localStorage.setItem('token', data.token);
             localStorage.setItem('token-init-date', new Date().getTime() );
             dispatch( onLogin({name: data.name, uid: data.uid}) )
@@ -50,6 +51,24 @@ export const useAuthStore = () => {
         }
     }
 
+    const checkAuthToken = async() => {
+        const token = localStorage.getItem('token');
+        if(!token) return dispatch( onLogout('El token expiró.') );
+
+        try {
+
+            const { data } = await calendarApi.get('/auth/renew');
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('token-init-date', new Date().getTime() );
+            dispatch( onLogin({name: data.name, uid: data.uid}) )
+
+        } catch (error) {
+            localStorage.clear();
+            dispatch( onLogout('El token expiró.') );
+        }
+
+    }
+
     return{
 
         //* Propiedades
@@ -59,6 +78,7 @@ export const useAuthStore = () => {
 
         //* Métodos
         startLogin,
-        startRegister
+        startRegister,
+        checkAuthToken
     }
 }
