@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
+import Swal from "sweetalert2";
 
 import { calendarApi } from "../api";
 
@@ -13,44 +14,49 @@ export const useCalendarStore = () => {
     const { events, activeEvent } = useSelector( (state) => state.calendar)
     const { user } = useSelector( (state) => state.auth)
 
-    //? ACTIVAR UN EVENTO
+    //! ACTIVAR UN EVENTO
     const setActiveEvent = ( calendarEvent ) => {
         dispatch( onSetActiveEvent( calendarEvent ) );
     }
 
-    //? CREAR O ACTUALIZAR EVENTO
+    //! CREAR O ACTUALIZAR EVENTO
     const startSavingEvent = async(calendarEvent) => {
 
-        // TODO: llegar al backend
+        try {
 
-
-        // Todo bien
-        if( calendarEvent._id ){
-
-            // ? Actualizar
-            dispatch(onUpdateEvent( {...calendarEvent} ))
-
-        }else{
-            // ? Crear
-            const { data } = await calendarApi.post('/events', calendarEvent)
-            console.log({data});
-            dispatch(onAddNewEvent( {...calendarEvent, id: data.evento.id, user} ));
+            if( calendarEvent.id ){
+    
+                // ? Actualizar
+                await calendarApi.put(`/events/${calendarEvent.id}`, calendarEvent)
+                dispatch(onUpdateEvent( {...calendarEvent, user} ))
+                return;
+    
+            }
+                // ? Crear
+                const { data } = await calendarApi.post('/events', calendarEvent)
+                console.log({data});
+                dispatch(onAddNewEvent( {...calendarEvent, id: data.evento.id, user} ));    
+            
+        } catch (error) {
+            console.log(error);
+            Swal.fire('Error al guardar', error.response.data?.msg, 'error')
         }
 
     }
     
-    //? BORRAR EVENTO
+    //! BORRAR EVENTO
     const startDeleteEvent = () => {
         // TODO: Llegar al backend
         dispatch( onDeleteEvent() );
     }
 
-    //? CARGA DE EVENTOS
-    const startLoadingEvents = async() => {
+    //! CARGA DE EVENTOS
+    const startLoadingEvents = async( user ) => {
         try {
 
-            const {data} = await calendarApi.get('/events')
-            const events = convertEventsToDateEvents(data.eventos)
+            const {data} = await calendarApi.get(`/events/${user.uid}`)
+            console.log(data);
+            const events = convertEventsToDateEvents(data.eventosUsuario)
             dispatch( onLoadEvents(events) );
             
         } catch (error) {

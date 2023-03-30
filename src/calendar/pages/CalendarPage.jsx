@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Calendar } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import { useSelector } from 'react-redux';
 
 import { Navbar, CalendarEventBox, CalendarModal, FabAddNew, FabDeleteEvent } from "../";
 import { localizer, getMessagesES } from '../../helpers';
@@ -13,8 +14,7 @@ export const CalendarPage = () => {
   const { openDateModal } = useUiStore();
   const { events, setActiveEvent, activeEvent, startLoadingEvents } = useCalendarStore();
   const [lastView, setLastView] = useState(localStorage.getItem('lastView') || 'month')
-
-  
+  const { user } = useSelector( (state) => state.auth)
 
   // Hacer Hook de eventStyleGetter
   const eventStyleGetter = ( event, start, end, isSelected ) => {
@@ -46,7 +46,7 @@ export const CalendarPage = () => {
 
   //* Carga de eventos BD
   useEffect(() => {
-    startLoadingEvents();  
+    startLoadingEvents( user );  
   }, [])
   
   

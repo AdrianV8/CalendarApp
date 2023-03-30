@@ -2,13 +2,13 @@ import { createSlice } from '@reduxjs/toolkit'
 import { addHours } from 'date-fns'
 
 // const tempEvent =   {
-//     _id: new Date().getTime(),
+//     id: new Date().getTime(),
 //     title: 'Evento',
 //     notes: 'comprar comida',
 //     start: new Date(),
 //     end: addHours( new Date(), 2 ),
 //     user: {
-//         _id: '123',
+//         id: '123',
 //         name: 'Adrian'
 //       }
 // }
@@ -43,7 +43,7 @@ export const calendarSlice = createSlice({
                  * Si el 'id' del evento es el mismo que el que se manda
                  * a través del payload, regresaremos el payload (que seria el nuevo evento actualizado)
                  */
-                if(event._id === payload._id){
+                if(event.id === payload.id){
                     return payload;
                 }
 
@@ -55,8 +55,8 @@ export const calendarSlice = createSlice({
         onDeleteEvent: (state) => {
 
             if(state.activeEvent){
-                // Regresar todos los eventos cuyo '_id' sea diferente a la nota activa
-                state.events = state.events.filter( event => event._id !== state.activeEvent._id );
+                // Regresar todos los eventos cuyo 'id' sea diferente a la nota activa
+                state.events = state.events.filter( event => event.id !== state.activeEvent.id );
                 state.activeEvent = null;
             }
 
